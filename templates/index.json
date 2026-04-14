@@ -9,6 +9,42 @@
  */
 {
   "sections": {
+    "featured_collections_grid_m8dX8D": {
+      "type": "featured-collections-grid",
+      "blocks": {
+        "collection_card_RpefVP": {
+          "type": "collection_card",
+          "settings": {
+            "collection": "canon-ecosystem",
+            "button_text": "Shop Now"
+          }
+        },
+        "collection_card_terRrU": {
+          "type": "collection_card",
+          "settings": {
+            "collection": "high-performance-gear",
+            "button_text": "Shop Now"
+          }
+        },
+        "collection_card_8W6PJp": {
+          "type": "collection_card",
+          "settings": {
+            "collection": "price",
+            "button_text": "Shop Now"
+          }
+        }
+      },
+      "block_order": [
+        "collection_card_RpefVP",
+        "collection_card_terRrU",
+        "collection_card_8W6PJp"
+      ],
+      "name": "Featured Collections",
+      "settings": {
+        "heading": "Featured Collections",
+        "subheading": "Explore our most popular product categories"
+      }
+    },
     "hero_jVaWmY": {
       "type": "hero",
       "blocks": {
@@ -58,6 +94,7 @@
         "text_YLPk4p",
         "button_H9gpTf"
       ],
+      "disabled": true,
       "name": "t:names.hero",
       "settings": {
         "media_type_1": "image",
@@ -287,6 +324,7 @@
     }
   },
   "order": [
+    "featured_collections_grid_m8dX8D",
     "hero_jVaWmY",
     "product_list_fa6P9H"
   ]
