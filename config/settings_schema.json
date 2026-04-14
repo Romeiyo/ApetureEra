@@ -2351,5 +2351,28 @@
         "default": true
       }
     ]
+  },
+  {
+    "name": "Featured Grid Style",
+    "settings": [
+      {
+        "type": "color",
+        "id": "grid_bg_color",
+        "label": "Section Background",
+        "default": "#F5EAD8"
+      },
+      {
+        "type": "color",
+        "id": "grid_card_bg",
+        "label": "Card Background",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "grid_accent_border",
+        "label": "Image Accent Border",
+        "default": "#C9913A"
+      }
+    ]
   }
 ]
