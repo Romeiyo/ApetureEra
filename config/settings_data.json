@@ -79,6 +79,9 @@
     "variant_button_border_width": 1,
     "variant_button_radius": 14,
     "variant_button_width": "equal-width-buttons",
+    "show_announcement": true,
+    "announcement_text": "Free shipping on orders over R10,000",
+    "announcement_bg": "#184e18",
     "sections": {
       "password-footer": {
         "type": "password-footer",
