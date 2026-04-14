@@ -23,16 +23,16 @@
                   src="{{ collection.image | image_url: width: 600 }}"
                   alt="{{ collection.image.alt }}"
                   class="collection-card__image"
-                  width="600"
-                  height="600"
+                  width="200"
+                  height="200"
                 >
               {% elsif collection.products.first.featured_image %}
                 <img 
                   src="{{ collection.products.first.featured_image | image_url: width: 600 }}"
                   alt="{{ collection.products.first.featured_image.alt }}"
                   class="collection-card__image"
-                  width="600"
-                  height="600"
+                  width="200"
+                  height="200"
                 >
               {% else %}
                 <div class="collection-card__placeholder">No Image</div>
