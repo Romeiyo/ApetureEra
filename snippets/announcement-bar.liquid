@@ -1,0 +1,23 @@
+{% if settings.show_announcement %}
+  <div class="announcement-bar" style="background-color: {{ settings.announcement_bg }}; color: {{ settings.announcement_text_color }}; padding: 1rem; text-align: center;">
+    {% if settings.announcement_link %}
+      <a href="{{ settings.announcement_link }}" style="color: {{ settings.announcement_text_color }}; text-decoration: none;">
+        {{ settings.announcement_text }}
+      </a>
+    {% else %}
+      {{ settings.announcement_text }}
+    {% endif %}
+  </div>
+
+  <style>
+    .announcement-bar {
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+
+    .announcement-bar a:hover {
+      text-decoration: underline;
+    }
+  </style>
+{% endif %}

@@ -1,0 +1,142 @@
+<nav class="mega-menu">
+  <ul class="mega-menu__list">
+    {% for link in linklists['main-menu'].links %}
+      <li class="mega-menu__item">
+        
+        <a 
+          href="{{ link.url }}"
+          class="mega-menu__link {% if link.active or link.child_active %}mega-menu__link--active{% endif %}"
+        >
+          {{ link.title }}
+          {% if link.links.size > 0 %}
+            <span class="mega-menu__indicator">▼</span>
+          {% endif %}
+        </a>
+
+        
+        {% if link.links.size > 0 %}
+          <div class="mega-menu__dropdown">
+            <ul class="mega-menu__sublist">
+              {% for child_link in link.links %}
+                <li class="mega-menu__subitem">
+                  <a 
+                    href="{{ child_link.url }}"
+                    class="mega-menu__sublink {% if child_link.active %}mega-menu__sublink--active{% endif %}"
+                  >
+                    {{ child_link.title }}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</nav>
+
+<style>
+  .mega-menu {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 0 1rem;
+  }
+
+  .mega-menu__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 2rem;
+  }
+
+  .mega-menu__item {
+    position: relative;
+  }
+
+  .mega-menu__link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 0;
+    color: #2a2a2a;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+  }
+
+  .mega-menu__link:hover {
+    color: #0a0a23;
+  }
+
+  .mega-menu__link--active {
+    color: #0a0a23;
+    border-bottom: 2px solid #0a0a23;
+    padding-bottom: calc(1rem - 2px);
+  }
+
+  .mega-menu__indicator {
+    font-size: 0.7rem;
+    transition: transform 0.3s ease;
+  }
+
+  
+  .mega-menu__item:hover .mega-menu__dropdown {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .mega-menu__item:hover .mega-menu__indicator {
+    transform: rotate(180deg);
+  }
+
+  .mega-menu__dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-top: none;
+    min-width: 220px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .mega-menu__sublist {
+    list-style: none;
+    margin: 0;
+    padding: 0.5rem 0;
+  }
+
+  .mega-menu__subitem {
+    margin: 0;
+  }
+
+  .mega-menu__sublink {
+    display: block;
+    padding: 0.75rem 1rem;
+    color: #555;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .mega-menu__sublink:hover,
+  .mega-menu__sublink--active {
+    background-color: #e8e8e8;
+    color: #0a0a23;
+    font-weight: 600;
+  }
+
+  @media (max-width: 768px) {
+    .mega-menu {
+      display: none;
+    }
+  }
+</style>
