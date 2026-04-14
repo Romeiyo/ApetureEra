@@ -82,6 +82,8 @@
     "show_announcement": true,
     "announcement_text": "Free shipping on orders over R10,000",
     "announcement_bg": "#184e18",
+    "show_sale_badges": true,
+    "show_vendor_on_cards": false,
     "sections": {
       "password-footer": {
         "type": "password-footer",
