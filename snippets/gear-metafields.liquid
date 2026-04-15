@@ -1,0 +1,71 @@
+{% assign has_warranty = product.metafields.custom.warranty_months.value %}
+{% assign has_terms = product.metafields.custom.warranty_terms.value %}
+{% assign has_spec = product.metafields.custom.spec_sheet.value %}
+{% assign has_energy = product.metafields.custom.energy_rating.value %}
+{% assign has_year = product.metafields.custom.release_year.value %}
+{% assign is_refurbished = product.metafields.custom.is_refurbished.value %}
+
+{% if has_warranty or has_terms or has_spec or has_energy or has_year or is_refurbished %}
+  <div class="product-specs-container" style="margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 8px;">
+    
+    {% if is_refurbished == true %}
+      <span style="background: #ed8936; color: white; padding: 4px 12px; border-radius: 4px; font-size: 0.85rem; display: inline-block; margin-bottom: 15px;">
+        Certified Refurbished
+      </span>
+    {% endif %}
+
+    <h3 style="margin-bottom: 15px;">Technical Specifications</h3>
+    
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; text-align: left;">
+      <tbody>
+        {% if has_warranty %}
+          <tr style="border-bottom: 1px solid #eee;">
+            <th style="padding: 8px 0;">Warranty</th>
+            <td style="padding: 8px 0;">{{ has_warranty }} months</td>
+          </tr>
+        {% endif %}
+        
+        {% if has_energy %}
+          <tr style="border-bottom: 1px solid #eee;">
+            <th style="padding: 8px 0;">Energy Rating</th>
+            <td style="padding: 8px 0;">
+              {% case has_energy %}
+                {% when 'A++' %}
+                  <span style="background: #38a169; color: white; padding: 2px 8px; border-radius: 4px;">A++ (Excellent)</span>
+                {% when 'A+' %}
+                  <span style="background: #68d391; color: black; padding: 2px 8px; border-radius: 4px;">A+ (Very Good)</span>
+                {% when 'A' %}
+                  <span style="background: #ecc94b; color: black; padding: 2px 8px; border-radius: 4px;">A (Good)</span>
+                {% when 'B' %}
+                  <span style="background: #ed8936; color: white; padding: 2px 8px; border-radius: 4px;">B (Average)</span>
+                {% else %}
+                  <span style="background: #e53e3e; color: white; padding: 2px 8px; border-radius: 4px;">{{ has_energy }} (Below Average)</span>
+              {% endcase %}
+            </td>
+          </tr>
+        {% endif %}
+        
+        {% if has_year %}
+          <tr style="border-bottom: 1px solid #eee;">
+            <th style="padding: 8px 0;">Release Year</th>
+            <td style="padding: 8px 0;">{{ has_year }}</td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+
+    {% if has_terms %}
+      <div style="margin-bottom: 20px; font-size: 0.9rem;">
+        <strong>Warranty Terms:</strong>
+        {{ product.metafields.custom.warranty_terms | metafield_tag }}
+      </div>
+    {% endif %}
+
+    {% if has_spec %}
+      <a href="{{ has_spec.url }}" target="_blank" download style="display: inline-block; background: #000; color: #fff; padding: 10px 15px; text-decoration: none; border-radius: 4px;">
+        📄 Download Specification Sheet (PDF)
+      </a>
+    {% endif %}
+
+  </div>
+{% endif %}
