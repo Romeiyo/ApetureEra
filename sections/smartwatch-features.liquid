@@ -1,0 +1,267 @@
+<div class="product-badges" style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+  {% if product.compare_at_price > product.price %}
+    {% assign discount_percentage = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price | round %}
+    <span class="badge badge-sale" style="display: inline-block; padding: 0.5rem 1rem; border-radius: 4px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; background-color: #C62828; color: white;">SALE — Save {{ discount_percentage }}%</span>
+  {% endif %}
+  {% if product.tags contains 'new-arrival' %}
+    <span class="badge badge-new" style="display: inline-block; padding: 0.5rem 1rem; border-radius: 4px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; background-color: #1B5E20; color: white;">New Arrival</span>
+  {% endif %}
+  {% if product.tags contains 'best-seller' %}
+    <span class="badge badge-bestseller" style="display: inline-block; padding: 0.5rem 1rem; border-radius: 4px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; background-color: #D4A574; color: #3E2723;">Best Seller</span>
+  {% endif %}
+  {% unless product.available %}
+    <span class="badge badge-soldout" style="display: inline-block; padding: 0.5rem 1rem; border-radius: 4px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; background-color: #9E9E9E; color: white;">Sold Out</span>
+  {% endunless %}
+</div>
+
+<div class="product-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin: 2rem 0; max-width: 1200px;">
+  
+  <div class="product-images-section" style="display: flex; flex-direction: column; gap: 1rem;">
+    
+    <div class="featured-image-wrapper" style="background-color: #F5F5F5; padding: 2rem; border-radius: 8px; overflow: hidden;">
+      <img 
+        src="{{ product.featured_image | image_url: width: 600 }}" 
+        alt="{{ product.title }}"
+        id="featured-image"
+        class="featured-image"
+        style="display: block; border-radius: 4px;"
+        width="100%"
+        height="auto"
+      >
+    </div>
+    
+    <div class="image-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 0.75rem;">
+      {% for image in product.images %}
+        <img 
+          src="{{ image | image_url: width: 150 }}" 
+          alt="{{ image.alt | default: product.title }}"
+          width="120"
+          height="120"
+          loading="lazy"
+          class="gallery-thumbnail"
+          data-full-url="{{ image | image_url: width: 600 }}"
+          style="width: 100%; height: 100px; object-fit: cover; border: 2px solid #E0E0E0; border-radius: 4px; cursor: pointer; transition: all 0.3s ease;"
+        >
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="product-info-section" style="display: flex; flex-direction: column; gap: 1.5rem;">
+    
+    <div class="product-header" style="border-bottom: 2px solid #D4A574; padding-bottom: 1.5rem;">
+      <p class="product-vendor" style="font-size: 0.85rem; font-weight: 700; color: #1B5E20; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; margin-top: 0;">{{ product.vendor | upcase }}</p>
+      <h1 class="product-title" style="font-size: 2.25rem; font-weight: 700; color: #3E2723; line-height: 1.2; margin-bottom: 0.75rem; margin-top: 0;">{{ product.title }}</h1>
+      <p class="product-type" style="font-size: 0.95rem; color: #666; margin-bottom: 0.5rem; margin-top: 0;">{{ product.type }}</p>
+      <p class="product-date" style="font-size: 0.85rem; color: #666; font-style: italic; margin-top: 0; margin-bottom: 0;">Added {{ product.created_at | date: "%B %d, %Y" }}</p>
+    </div>
+
+    <div class="price-section" style="display: flex; align-items: center; gap: 1rem;">
+      {% if product.compare_at_price > product.price %}
+        <span class="price-original" style="font-size: 1.1rem; color: #666; text-decoration: line-through;">{{ product.compare_at_price | money }}</span>
+        <span class="price-current" style="font-size: 2rem; font-weight: 700; color: #3E2723;">{{ product.price | money }}</span>
+      {% else %}
+        <span class="price-current" style="font-size: 2rem; font-weight: 700; color: #3E2723;">{{ product.price | money }}</span>
+      {% endif %}
+    </div>
+
+    <div class="description-preview" style="background-color: #F5F5F5; padding: 1.5rem; border-left: 4px solid #D4A574; border-radius: 4px; font-size: 0.95rem; line-height: 1.6; color: #333;">
+      <p style="margin: 0;">{{ product.description | strip_html | truncate: 150 }}</p>
+    </div>
+
+    {% form 'product', product %}
+      
+      {% if product.options_with_values.size > 0 %}
+        <div class="variant-selector-section" style="border: 1px solid #E0E0E0; padding: 1.5rem; border-radius: 8px; background-color: #FAFAFA;">
+          <h3 class="selector-heading" style="font-size: 1.1rem; font-weight: 700; color: #3E2723; margin-bottom: 1rem; margin-top: 0;">Select Configuration</h3>
+          {% for option in product.options_with_values %}
+            <div class="variant-option-group" style="margin-bottom: 1.25rem;">
+              <label for="option-{{ option.name }}" class="option-label" style="display: block; font-size: 0.9rem; font-weight: 600; color: #333; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 0;">{{ option.name }}</label>
+              <select 
+                id="option-{{ option.name }}" 
+                name="options[{{ option.name }}]" 
+                class="variant-select"
+                style="width: 100%; padding: 0.75rem; border: 2px solid #E0E0E0; border-radius: 4px; font-size: 0.95rem; color: #333; background-color: white; cursor: pointer; transition: border-color 0.3s ease;"
+              >
+                {% for value in option.values %}
+                  <option value="{{ value }}">{{ value }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <div class="selected-price-display" style="display: flex; align-items: baseline; gap: 0.5rem; font-size: 1.1rem; padding: 1rem; background-color: #F9F9F9; border-radius: 4px;">
+        <span class="selected-price-label" style="font-weight: 600; color: #666;">Price:</span>
+        <span class="selected-price-value" id="selected-price" style="font-size: 1.5rem; font-weight: 700; color: #3E2723;">
+          {{ product.selected_or_first_available_variant.price | money }}
+        </span>
+      </div>
+
+      <input 
+        type="hidden" 
+        name="id" 
+        id="variant-id" 
+        value="{{ product.selected_or_first_available_variant.id }}"
+      >
+
+      <button type="submit" id="add-to-cart-btn" class="btn-add-to-cart" style="width: 100%; padding: 1rem; background-color: #3E2723; color: white; border: none; border-radius: 4px; font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.3s ease; margin-top: 0.5rem;">
+        {% if product.available %}
+          Add to Cart
+        {% else %}
+          Sold Out
+        {% endif %}
+      </button>
+
+      <p class="variant-count" style="text-align: center; font-size: 0.85rem; color: #666; margin-top: 1rem; font-style: italic;">{{ product.variants | size }} configurations available</p>
+    {% endform %}
+
+    <details class="description-full-section" style="margin-top: 2rem;">
+      <summary class="description-summary" style="cursor: pointer; font-weight: 600; color: #3E2723; padding: 1rem; background-color: #F5F5F5; border-radius: 4px; user-select: none;">View Full Description</summary>
+      <div class="description-content" style="padding: 1.5rem; line-height: 1.8; color: #333;">
+        {{ product.description }}
+      </div>
+    </details>
+  </div>
+</div>
+
+{% render 'watch-metafields' %}
+
+<div class="variants-section" style="margin-top: 3rem; padding-top: 3rem; border-top: 2px solid #E0E0E0;">
+  <h2 style="font-size: 1.5rem; font-weight: 700; color: #3E2723; margin-bottom: 1.5rem;">Available Variants</h2>
+  
+  {% if product.variants.size > 0 %}
+    <div style="overflow-x: auto;">
+      <table class="variants-table" style="width: 100%; border-collapse: collapse; background-color: white; min-width: 500px;">
+        <thead>
+          <tr style="background-color: #F5F5F5; border-bottom: 2px solid #E0E0E0;">
+            <th style="padding: 1rem; text-align: left; font-weight: 700; color: #3E2723; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px;">Variant</th>
+            <th style="padding: 1rem; text-align: left; font-weight: 700; color: #3E2723; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px;">SKU</th>
+            <th style="padding: 1rem; text-align: left; font-weight: 700; color: #3E2723; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px;">Price</th>
+            <th style="padding: 1rem; text-align: left; font-weight: 700; color: #3E2723; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px;">Stock</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for variant in product.variants %}
+            <tr style="border-bottom: 1px solid #E0E0E0; transition: background-color 0.2s;">
+              <td class="variant-title" style="font-weight: 600; padding: 1rem; color: #333;">{{ variant.title }}</td>
+              <td class="variant-sku" style="font-family: monospace; color: #666; font-size: 0.9rem; padding: 1rem;">{{ variant.sku | default: 'N/A' }}</td>
+              <td class="variant-price" style="font-weight: 600; color: #3E2723; padding: 1rem;">{{ variant.price | money }}</td>
+              <td class="variant-stock" style="padding: 1rem;">
+                {% if variant.available %}
+                  <span style="display: inline-block; padding: 0.35rem 0.75rem; background-color: #1B5E20; color: white; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">In Stock</span>
+                {% else %}
+                  <span style="display: inline-block; padding: 0.35rem 0.75rem; background-color: #D32F2F; color: white; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">Sold Out</span>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p style="color: #666; font-style: italic; padding: 1rem; text-align: center;">No variants available.</p>
+  {% endif %}
+</div>
+
+<script>
+  const variantData = {{ product.variants | json }};
+  const optionNames = {{ product.options | json }};
+
+  document.querySelectorAll('.variant-select').forEach(select => {
+    select.addEventListener('change', updateVariant);
+  });
+
+  document.querySelectorAll('.gallery-thumbnail').forEach((thumb, index) => {
+    thumb.addEventListener('click', function() {
+      const fullUrl = this.dataset.fullUrl;
+      document.getElementById('featured-image').src = fullUrl;
+      
+      document.querySelectorAll('.gallery-thumbnail').forEach(t => {
+        t.style.borderColor = '#E0E0E0';
+        t.style.boxShadow = 'none';
+      });
+      this.style.borderColor = '#3E2723';
+      this.style.boxShadow = '0 0 8px rgba(62, 39, 35, 0.3)';
+    });
+    
+    if (index === 0) {
+      thumb.style.borderColor = '#3E2723';
+      thumb.style.boxShadow = '0 0 8px rgba(62, 39, 35, 0.3)';
+    }
+  });
+
+  const btn = document.getElementById('add-to-cart-btn');
+  btn.addEventListener('mouseenter', function() {
+    if (!this.disabled) {
+      this.style.backgroundColor = '#1B5E20';
+      this.style.boxShadow = '0 4px 12px rgba(27, 94, 32, 0.3)';
+    }
+  });
+  btn.addEventListener('mouseleave', function() {
+    if (!this.disabled) {
+      this.style.backgroundColor = '#3E2723';
+      this.style.boxShadow = 'none';
+    }
+  });
+
+  document.querySelectorAll('.variant-select').forEach(select => {
+    select.addEventListener('focus', function() {
+      this.style.borderColor = '#D4A574';
+      this.style.boxShadow = '0 0 0 3px rgba(212, 165, 116, 0.1)';
+    });
+    select.addEventListener('blur', function() {
+      this.style.borderColor = '#E0E0E0';
+      this.style.boxShadow = 'none';
+    });
+  });
+
+  function updateVariant() {
+    const selectedOptions = {};
+    optionNames.forEach((optionName) => {
+      const select = document.querySelector(`select[name="options[${optionName}]"]`);
+      selectedOptions[optionName] = select.value;
+    });
+
+    const selectedVariant = variantData.find(variant => {
+      return optionNames.every((optionName, index) => {
+        return variant.options[index] === selectedOptions[optionName];
+      });
+    });
+
+    if (selectedVariant) {
+      document.getElementById('variant-id').value = selectedVariant.id;
+      
+      const price = (selectedVariant.price / 100).toLocaleString('en-ZA', {
+        style: 'currency',
+        currency: 'ZAR'
+      });
+
+      document.getElementById('selected-price').textContent = price;
+      
+      const btn = document.getElementById('add-to-cart-btn');
+      if (selectedVariant.available) {
+        btn.textContent = 'Add to Cart';
+        btn.disabled = false;
+        btn.style.backgroundColor = '#3E2723';
+        btn.style.cursor = 'pointer';
+      } else {
+        btn.textContent = 'Sold Out';
+        btn.disabled = true;
+        btn.style.backgroundColor = '#BDBDBD';
+        btn.style.cursor = 'not-allowed';
+      }
+    }
+  }
+
+  updateVariant();
+</script>
+
+{% schema %}
+{
+  "name": "Smartwatch Features",
+  "presets": [
+    { "name": "Smartwatch Features" }
+  ]
+}
+{% endschema %}

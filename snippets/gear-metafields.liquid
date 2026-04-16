@@ -14,6 +14,12 @@
       </span>
     {% endif %}
 
+    {% comment %} {% if water_resistance_rating == true %}
+      <span style="background: #38a169; color: white; padding: 4px 12px; border-radius: 4px; font-size: 0.85rem; display: inline-block; margin-bottom: 15px;">
+        Water Resistant
+      </span>
+    {% endif %} {% endcomment %}
+
     <h3 style="margin-bottom: 15px;">Technical Specifications</h3>
     
     <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; text-align: left;">
@@ -66,6 +72,12 @@
         📄 Download Specification Sheet (PDF)
       </a>
     {% endif %}
+
+    {% comment %} {% if technical_manual %}
+      <a href="{{ technical_manual.url }}" target="_blank" download style="display: inline-block; background: #000; color: #fff; padding: 10px 15px; text-decoration: none; border-radius: 4px;">
+        📄 Download Technical Manual (PDF)
+      </a>
+    {% endif %} {% endcomment %}
 
   </div>
 {% endif %}
