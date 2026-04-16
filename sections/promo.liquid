@@ -1,0 +1,76 @@
+<script src="{{ 'heavy-lib.js' | asset_url }}" defer></script>
+
+{{ 'promo.css' | asset_url | stylesheet_tag }}
+
+<section class="promo-section">
+  <h2 class="promo-title">{{ section.settings.title }}</h2>
+
+  <p class="promo-body">{{ section.settings.description }}</p>
+
+  <img src="{{ section.settings.hero_image | image_url: '1200x' }}" 
+     alt="{{ section.settings.hero_image.alt | default: 'Promotional Hero Banner' }}"
+     width="1200" height="600" loading="lazy">
+
+  <button class="promo-btn" onclick="doPromo()"></button>
+
+  <a href="{{ section.settings.link }}">Explore our full collection</a>
+
+  <form>
+    <label for="Email-{{ section.id }}" class="visually-hidden">Email Address</label>
+    <input type="email" id="Email-{{ section.id }}" placeholder="Enter your email">
+    <button type="submit">Subscribe</button>
+  </form>
+
+  <div class="promo-grid">
+    {% for block in section.blocks %}
+      <div class="promo-card" {{ block.shopify_attributes }}>
+        <img src="{{ block.settings.card_image | image_url: '400x' }}" 
+        alt="{{ block.settings.card_image.alt | default: block.settings.card_title }}"
+        width="400" height="400" loading="lazy">
+
+        <h3>{{ block.settings.card_title }}</h3>
+        <p>{{ block.settings.card_text }}</p>
+
+        <button class="promo-btn" aria-label="Learn more about {{ block.settings.card_title }}">
+          <svg width="16" height="16" viewBox="0 0 16 16">
+            <path d="M8 0l8 16H0z" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+<script>
+  function doPromo() {
+    console.log("Promo section loaded successfully.");
+  }
+  document.addEventListener("DOMContentLoaded", function() {
+    doPromo();
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Promo Section (Broken)",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title", "default": "Big Sale Today" },
+    { "type": "textarea", "id": "description", "label": "Description", "default": "Check out our latest deals." },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero Image" },
+    { "type": "url", "id": "link", "label": "Link URL" }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Card",
+      "settings": [
+        { "type": "image_picker", "id": "card_image", "label": "Card Image" },
+        { "type": "text", "id": "card_title", "label": "Card Title", "default": "Product Name" },
+        { "type": "text", "id": "card_text", "label": "Card Text", "default": "Short description here." }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [{ "name": "Promo Section" }]
+}
+{% endschema %}
