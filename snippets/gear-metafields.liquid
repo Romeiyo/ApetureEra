@@ -4,6 +4,8 @@
 {% assign has_energy = product.metafields.custom.energy_rating.value %}
 {% assign has_year = product.metafields.custom.release_year.value %}
 {% assign is_refurbished = product.metafields.custom.is_refurbished.value %}
+{% assign water_resistance_rating = product.metafields.custom.water_resistance_rating.value %}
+{% assign technical_manual = product.metafields.custom.technical_manual.value %}
 
 {% if has_warranty or has_terms or has_spec or has_energy or has_year or is_refurbished %}
   <div class="product-specs-container" style="margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 8px;">
@@ -11,6 +13,12 @@
     {% if is_refurbished == true %}
       <span style="background: #ed8936; color: white; padding: 4px 12px; border-radius: 4px; font-size: 0.85rem; display: inline-block; margin-bottom: 15px;">
         Certified Refurbished
+      </span>
+    {% endif %}
+
+    {% if water_resistance_rating == true %}
+      <span style="background: #38a169; color: white; padding: 4px 12px; border-radius: 4px; font-size: 0.85rem; display: inline-block; margin-bottom: 15px;">
+        Water Resistant
       </span>
     {% endif %}
 
@@ -64,6 +72,12 @@
     {% if has_spec %}
       <a href="{{ has_spec.url }}" target="_blank" download style="display: inline-block; background: #000; color: #fff; padding: 10px 15px; text-decoration: none; border-radius: 4px;">
         📄 Download Specification Sheet (PDF)
+      </a>
+    {% endif %}
+
+    {% if technical_manual %}
+      <a href="{{ technical_manual.url }}" target="_blank" download style="display: inline-block; background: #000; color: #fff; padding: 10px 15px; text-decoration: none; border-radius: 4px;">
+        📄 Download Technical Manual (PDF)
       </a>
     {% endif %}
 
